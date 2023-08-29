@@ -17,20 +17,15 @@ const VideoContainer = () => {
     // console.log(json.items);
     setVideos(json.items);
   };
+
+  if (videos.length === 0) {
+    return (<MainPageShimmer />);
+  }
   return (
     <>
       <div className="flex flex-wrap">
-        {videos.length === 0 ? (
-          <MainPageShimmer />
-        ) : 
-          <div className="flex flex-wrap">
-            {videos.map((video) => (
-              <Link to={"/watch?v=" + video.id}>
-                <VideoCards key={video.id} cards={video} />
-              </Link>
-            ))}
-          </div>
-        }
+        {videos.map((video) => (<Link to={"/watch?v=" + video.id}><VideoCards key={video.id} cards={video} /> </Link>
+        ))}
       </div>
     </>
   );

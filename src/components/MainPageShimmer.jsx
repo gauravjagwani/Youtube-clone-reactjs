@@ -14,7 +14,7 @@ const MainPageShimmer = () => {
       </div>
     );
   });
-  return <div>
+  return <div className="flex flex-wrap">
   {mapped}
   </div>;
 };

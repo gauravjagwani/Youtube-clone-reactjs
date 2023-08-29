@@ -11,7 +11,7 @@ const VideoCards = ({cards}) => {
 
     
   return (
-    <div className=" p-2 m-2 w-[288px] h-[297px] border border-2 border-black">    
+    <div className=" p-2 m-2 w-[288px] h-[297px]">    
       <img className="rounded-lg" src={thumbnails.medium.url} alt="thumbnail" />
       <ul>
         <li className="font-bold">{title}</li>
