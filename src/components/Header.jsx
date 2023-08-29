@@ -1,8 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
+import { YOUTUBE_SEARCH_API } from "../utils/constant";
 
 const Header = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState ([]);
+  const [showSuggestions, setShowSuggestions] =useState(false)
+  useEffect(() => {
+    //Api call
+    const timer = setTimeout(() => getSearchSuggestions(), 200);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery]);
+
+  //**key-i */
+
+  const getSearchSuggestions = async () => {
+    console.log(searchQuery);
+    const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
+    const json = await data.json();
+    console.log(json[1]);
+    setSuggestions(json[1])
+  };
+
   const dispatch = useDispatch();
   const toggleMenuHandler = () => {
     dispatch(toggleMenu());
@@ -24,15 +47,28 @@ const Header = () => {
           />
         </a>
       </div>
-      <div className="col-span-10 text-center">
+      <div className="col-span-10 px-10">
         <input
-          className="w-1/2 border border-gray-400 rounded-l-full p-2 "
+          className="p-2 w-1/2 border border-gray-400 rounded-l-full "
           type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onFocus ={()=> setShowSuggestions(true)}
+          onBlur ={()=> setShowSuggestions(false)}
         />
         <button className="border border-gray-300 p-2 rounded-r-full bg-gray-200">
           🔍
           {/* <img className="w-[20px] h-[20px] mt-[2px]" src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/search-512.png" alt="search-icon" /> */}
         </button>
+      {showSuggestions && (<div className=" absolute bg-white py-2 px-5 w-[37rem] rounded-md shadow-lg">
+        <ul >
+          {suggestions.map((suggestion) => 
+          (<li key={suggestion} className="hover:bg-gray-300"> 🔎{suggestion}</li>)
+          )}
+
+        </ul>
+
+      </div>)}
       </div>
       <div>
         <img
